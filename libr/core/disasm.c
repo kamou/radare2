@@ -3848,6 +3848,7 @@ R_API int r_core_print_disasm_instructions(RCore *core, int nb_bytes, int nb_opc
 	const ut64 old_offset = core->offset;
 	bool hasanal = false;
 	int nbytes = 0;
+	ut32 tbs = core->blocksize;
 
 	r_reg_arena_push (core->anal->reg);
 	if (!nb_bytes) {
@@ -3876,6 +3877,11 @@ R_API int r_core_print_disasm_instructions(RCore *core, int nb_bytes, int nb_opc
 			nb_bytes = -nb_bytes;
 			core->offset -= nb_bytes;
 			r_core_read_at (core, core->offset, core->block, nb_bytes);
+		} else {
+			if (nb_bytes > core->blocksize) {
+				r_core_block_size (core, nb_bytes);
+				r_core_read_at (core, core->offset, core->block, nb_bytes);
+			}
 		}
 	}
 
@@ -4015,6 +4021,9 @@ R_API int r_core_print_disasm_instructions(RCore *core, int nb_bytes, int nb_opc
 	ds_free (ds);
 	core->offset = old_offset;
 	r_reg_arena_pop (core->anal->reg);
+	if (tbs != core->blocksize) {
+		r_core_block_size (core, tbs);
+	}
 
 	return len;
 }
