@@ -3238,9 +3238,7 @@ R_API int r_core_visual_graph(RCore *core, RAGraph *g, RAnalFunction *_fcn, int 
 			}
 			break;
 		case 'Z':
-			if (okey == 27) {
-				agraph_prev_node (g);
-			}
+			agraph_prev_node (g);
 			break;
 		case 's':
 			key_s = r_config_get (core->config, "key.s");
