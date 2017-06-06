@@ -1591,7 +1591,7 @@ R_API char* r_print_colorize_opcode(RPrint *print, char *p, const char *reg, con
 				strcpy (o + j, Color_RESET);
 				j += strlen (Color_RESET);
 				o[j++] = p[i];
-				if (p[i] == '$' || ((p[i] > '0') && (p[i] < '9'))) {
+				if (p[i+1] == '$' || ((p[i+1] > '0') && (p[i+1] < '9'))) {
 					ut32 num_len = strlen (num);
 					if (num_len + j + 10 >= COLORIZE_BUFSIZE) {
 						eprintf ("r_print_colorize_opcode(): buffer overflow!\n");
