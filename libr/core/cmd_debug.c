@@ -774,7 +774,8 @@ static int step_until_esil(RCore *core, const char *esilstr) {
 static bool is_repeatable_inst(RCore *core, ut64 addr) {
 	bool ret = false;
 
-	if (!r_str_startswith (r_config_get (core->config, "asm.arch"), "x86")) {
+	if (r_config_get_i (core->config, "cfg.r2wars") ||
+		!r_str_startswith (r_config_get (core->config, "asm.arch"), "x86")) {
 		return false;
 	}
 
@@ -786,7 +787,7 @@ static bool is_repeatable_inst(RCore *core, ut64 addr) {
 
 	ret = (op->prefix & R_ANAL_OP_PREFIX_REP) || (op->prefix & R_ANAL_OP_PREFIX_REPNE);
 
-    r_anal_op_free (op);
+	r_anal_op_free (op);
 	return ret;
 }
 
